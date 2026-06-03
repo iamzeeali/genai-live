@@ -6,13 +6,11 @@ from pgvector.psycopg2 import register_vector
 
 load_dotenv()
 
-DB_HOST = os.getenv("DB_HOST", "localhost")
-DB_PORT = os.getenv("DB_PORT", "5432")
-DB_NAME = os.getenv("DB_NAME", "semantic_search")
-DB_USER = os.getenv("DB_USER", "admin")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "password")
-
-DB_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+DB_URL = (
+    os.getenv("DATABASE_URL")
+    or os.getenv("POSTGRES_URL")
+    or "postgresql://admin:password@localhost:5432/semantic_search"
+)
 
 
 def get_conn():
