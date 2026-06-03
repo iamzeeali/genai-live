@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export default function App() {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<{ title: string; score: number; summary: string }[]>([]);
   const [loading, setLoading] = useState(false);
 
   const search = async () => {
