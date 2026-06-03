@@ -5,6 +5,25 @@ build/
 dist/
 wheels/
 *.egg-info
-.env
+
 # Virtual environments
-.venv.env
+.venv/
+venv/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model cache / data
+*.pkl
+*.pt
+*.bin
