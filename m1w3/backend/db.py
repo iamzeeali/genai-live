@@ -20,10 +20,15 @@ def get_conn():
 
 
 def init_db():
-    conn = get_conn()
+    conn = psycopg2.connect(DB_URL)
     with conn:
         with conn.cursor() as cur:
             cur.execute("CREATE EXTENSION IF NOT EXISTS vector;")
+    conn.close()
+    # reconnect so register_vector finds the type
+    conn = get_conn()
+    with conn:
+        with conn.cursor() as cur:
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS movies (
                     id          SERIAL PRIMARY KEY,
