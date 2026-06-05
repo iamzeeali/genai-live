@@ -38,20 +38,28 @@ documents = [
 
 
 def ingest():
+    # like running your DB migration — creates the table if it doesn't exist
     init_db()
 
+    # JS equiv: const contents = documents.map(doc => doc.content)
     contents = [doc["content"] for doc in documents]
+    # send all texts to the AI model in one batch → get back an array of vectors (float arrays)
     embeddings = embed(contents)  # batched — one call for all docs
 
     conn = get_conn()
-    with conn:
+    with conn:  # auto-commits on success, rolls back on error — like a try/catch + transaction
         with conn.cursor() as cur:
+            # zip() pairs each doc with its embedding by index, like lodash _.zip()
             for doc, embedding in zip(documents, embeddings):
+                # %s = parameterized query — same idea as prepared statements in JS to prevent SQL injection
+                print(doc)
+                print(embedding)
                 cur.execute(
                     "INSERT INTO movies (title, summary, embedding) VALUES (%s, %s, %s)",
                     (doc["title"], doc["content"], embedding)
                 )
     conn.close()
+    # f"..." is Python's template literal — same as JS `Ingested ${documents.length} documents.`
     print(f"Ingested {len(documents)} documents.")
 
 
